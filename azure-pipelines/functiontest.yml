@@ -11,12 +11,12 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    cd src
+    cd js
     npm install
   displayName: 'Install dependencies'
 
 - script: |
-    cd src
+    cd js
     zip -r ../src.zip .
   displayName: 'Zip Function App'
 
