@@ -1,5 +1,5 @@
 variables:
-  packagePath: '$(System.DefaultWorkingDirectory)/function.zip'# zip will be at root
+  packagePath: '$(System.DefaultWorkingDirectory)/src.zip'
   azureSubscription: 'AuthDevOps'
   functionAppName: 'DevOpsauth32'
   resourceGroupName: 'DevOpsauth32_group'
@@ -11,11 +11,13 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    cd src
     npm install
   displayName: 'Install dependencies'
 
 - script: |
-    zip -r function.zip .
+    cd src
+    zip -r ../src.zip .
   displayName: 'Zip Function App'
 
 - task: AzureFunctionApp@1
