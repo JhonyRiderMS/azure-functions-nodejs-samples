@@ -1,9 +1,9 @@
 variables:
-  packagePath: '$(System.DefaultWorkingDirectory)/src.zip'
   azureSubscription: 'AuthDevOps'
   functionAppName: 'DevOpsauth32'
   resourceGroupName: 'DevOpsauth32_group'
-  
+  packagePath: '$(Build.ArtifactStagingDirectory)/src.zip'
+
 steps:
 - task: NodeTool@0
   inputs:
@@ -17,8 +17,12 @@ steps:
 
 - script: |
     cd js
-    zip -r ../src.zip .
-  displayName: 'Zip Function App'
+    zip -r $(Build.ArtifactStagingDirectory)/src.zip *
+  displayName: 'Zip Function App contents (no folder nesting)'
+
+- script: |
+    unzip -l $(Build.ArtifactStagingDirectory)/src.zip
+  displayName: 'List contents of zip (debug)'
 
 - task: AzureFunctionApp@1
   inputs:
