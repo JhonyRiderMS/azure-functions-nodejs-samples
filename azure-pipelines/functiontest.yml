@@ -1,0 +1,29 @@
+variables:
+  packagePath: '$(System.DefaultWorkingDirectory)/function.zip'# zip will be at root
+  azureSubscription: 'AuthDevOps'
+  functionAppName: 'DevOpsauth32'
+  resourceGroupName: 'DevOpsauth32_group'
+  
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+  displayName: 'Install dependencies'
+
+- script: |
+    zip -r function.zip .
+  displayName: 'Zip Function App'
+
+- task: AzureFunctionApp@1
+  inputs:
+    azureSubscription: $(azureSubscription)
+    appType: 'functionApp'
+    appName: $(functionAppName)
+    resourceGroupName: $(resourceGroupName)
+    package: $(packagePath)
+    enableManagedIdentity: true
+    deploymentMethod: 'zipDeploy'
